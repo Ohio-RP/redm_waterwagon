@@ -14,5 +14,12 @@ The Waterwagon script allows players to use wagons to transport water from river
 - Enable players to fill the wagon using water buckets, allowing water collection from water pumps.
 - Implement a system to save the remaining water count in the wagon to the database for future use, ensuring persistent gameplay.
 
+## Dependencies
+- Vorp Inventory
+
+## How to Install
+- Make sure dependencies are installed and updated.
+- Simply ensure the script after dependencies.
+
 ## Acknowledgment
 The initial concept and parts of the code were adapted from an older script called 'fm_farming.' Special thanks to the original creator for their contributions!
