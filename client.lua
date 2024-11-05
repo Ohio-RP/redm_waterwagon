@@ -109,16 +109,12 @@ Citizen.CreateThread(function()
                             end
                         else
                             PromptSetVisible(fillwagon, false)
-                            if not isInWater() and Citizen.InvokeNative(0xC92AC953F0A982AE, fillwagon) then
-                                TriggerEvent("vorp:TipRight", language.needWaterSource, 5000) -- Notify if not near water source
-                            end
                         end
 
                         -- Option to pour water into the player’s bucket
                         if waterLevel > 0 then
                             PromptSetVisible(wagonwater, true)
                             if Citizen.InvokeNative(0xC92AC953F0A982AE, wagonwater) then
-                                playPourAnimation()
                                 -- Request server to check inventory before playing animation
                                 TriggerServerEvent("tb_waterwagon:requestPourWater", networkId)
                             end
@@ -130,6 +126,11 @@ Citizen.CreateThread(function()
             end
         end
     end
+end)
+
+RegisterNetEvent("tb_waterwagon:pourWaterAnimation")
+AddEventHandler("tb_waterwagon:pourWaterAnimation", function()
+    playPourAnimation()
 end)
 
 -- Function to draw 3D text
