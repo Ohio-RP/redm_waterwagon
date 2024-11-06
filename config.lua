@@ -2,6 +2,8 @@ Config = {}
 
 Config.interactionDistance = 2 -- Distance to see drawtext and prompt for wagon
 
+Config.oxtarget = true -- set true if you use redm version of oxtarget
+
 -- Command to remove the bucket from the player's hand
 Config.removebucketcommand = "cbucket"
 
