@@ -1,5 +1,5 @@
 local Functions = {}
-local Config = require('shared.config')
+local Config = require 'shared.config'
 
 -----------------------------------
 ------ Debug Print Function -------
@@ -66,7 +66,7 @@ end
 function Functions.Notify(source, message, duration, msgType)
     if source == nil then
         if Config.notify == 'ox' then
-            lib.notify({description = message, duration = duration, type = msgType})
+            lib.notify({description = message, duration = duration, type = msgType, position = 'center-right'})
         elseif Config.notify == 'vorp' then
             TriggerEvent("vorp:TipRight", message, duration)
         else
@@ -74,7 +74,7 @@ function Functions.Notify(source, message, duration, msgType)
         end
     else
         if Config.notify == 'ox' then
-            TriggerClientEvent('ox_lib:notify', source, {description = message, duration = duration, type = msgType})
+            TriggerClientEvent('ox_lib:notify', source, {description = message, duration = duration, type = msgType, position = 'center-right'})
         elseif Config.notify == 'vorp' then
             TriggerClientEvent("vorp:TipRight", source, message, duration)
         else
