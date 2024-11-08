@@ -40,9 +40,11 @@ if Config.oxTarget then
                 end,
                 onSelect = function(data)
 
-                    if not Inventory.hasItem(Config.emptyCan) then
-                        Functions.Notify(nil, locale('noBucket'), 5000, 'error')
-                        return
+                    if not Config.standalone then 
+                        if not Inventory.hasItem(Config.emptyCan) then
+                            Functions.Notify(nil, locale('noBucket'), 5000, 'error')
+                            return
+                        end
                     end
 
                     if Functions.playAnimation('fill') then
@@ -63,9 +65,11 @@ if Config.oxTarget then
                 end,
                 onSelect = function(data)
 
-                    if not Inventory.hasItem(Config.emptyCan) then
-                        Functions.Notify(nil, locale('noBucket'), 5000, 'error')
-                        return
+                    if not Config.standalone then 
+                        if not Inventory.hasItem(Config.emptyCan) then
+                            Functions.Notify(nil, locale('noBucket'), 5000, 'error')
+                            return
+                        end
                     end
 
                     if Functions.playAnimation('pour') then
@@ -107,7 +111,8 @@ else
     CreateThread(function()
         while true do
             Wait(500)
-            local playerCoords = GetEntityCoords(PlayerPedId())
+            local ped = cache.ped
+            local playerCoords = GetEntityCoords(ped)
             closewagon = GetClosestVehicle(playerCoords, 10.0, 0, 70)
         end
     end)
@@ -116,7 +121,8 @@ else
         while true do
             Wait(0)
             if closewagon then
-                local playerCoords = GetEntityCoords(PlayerPedId())
+                local ped = cache.ped
+                local playerCoords = GetEntityCoords(ped)
                 local model = GetEntityModel(closewagon)
                 local wagonCoords = GetEntityCoords(closewagon)
                 local distanceToWagon = #(playerCoords - wagonCoords)
@@ -136,7 +142,7 @@ else
                             end
                             PromptSetActiveGroupThisFrame(prompts3, CreateVarString(10, 'LITERAL_STRING', locale('waterwagon')))
 
-                            if waterLevel < maxCapacity and isInWater() then
+                            if waterLevel < maxCapacity and isInWater(ped) then
                                 PromptSetVisible(fillwagon, true)
                                 if UiPromptHasStandardModeCompleted(fillwagon) then
 
