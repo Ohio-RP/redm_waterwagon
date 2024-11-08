@@ -1,0 +1,12 @@
+{
+    "needempty": "You need an empty bucket", 
+    "fillwagon": "Fill Water Wagon", 
+    "wagonwater": "Pour Water into Bucket", 
+    "wagonfull": "Wagon is Full", 
+    "wagonempty": "Wagon is Empty",
+    "waterbucketfilled": "Water bucket filled", 
+    "waterLevel": "Water Level: %s", 
+    "waterwagon": "Water Wagon",
+    "checkLevel": "Check Water Level",
+    "noBucket": "You dont have empty bucket in your hand."
+}
