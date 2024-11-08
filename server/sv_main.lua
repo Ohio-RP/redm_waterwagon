@@ -1,7 +1,7 @@
 lib.locale()
 
 local Config = require 'shared.config'
-local trb_Functions = require 'shared.functions'
+local Functions = require 'shared.functions'
 local Inventory = require 'bridge.sv_inventory'
 
 local lastFillTime = {}
@@ -42,7 +42,7 @@ RegisterServerEvent("tb_waterwagon:server:fillWagon", function(wagonType, networ
         updatedWaterwagons[networkId] = (updatedWaterwagons[networkId] or 0) + 1
         GlobalState.waterwagons = updatedWaterwagons
     else
-        trb_Functions.DebugPrint('error', 'Filling failed: ' .. reason) 
+        Functions.DebugPrint('error', 'Filling failed: ' .. reason) 
     end
 end)
 
@@ -55,23 +55,24 @@ RegisterServerEvent("tb_waterwagon:server:pourbacktoBucket", function(networkId)
                 updatedWaterwagons[networkId] = updatedWaterwagons[networkId] - 1
                 GlobalState.waterwagons = updatedWaterwagons
                 
-                Inventory.removeItem(source, Config.emptyCan, 1)
-                Inventory.addItem(source, Config.filledCan, 1)
-                TriggerClientEvent("vorp:TipRight", source, locale('waterbucketfilled'), 5000)
+                if Inventory.removeItem(source, Config.emptyCan, 1) then
+                    Inventory.addItem(source, Config.filledCan, 1)
+                end
+                Functions.Notify(source, locale('waterbucketfilled'), 5000, 'success')
             else
-                TriggerClientEvent("vorp:TipRight", source, locale('wagonempty'), 5000)
+                Functions.Notify(source, locale('wagonempty'), 5000, 'error')
             end
         else
-            TriggerClientEvent("vorp:TipRight", source, locale('needempty'), 5000)
+            Functions.Notify(source, locale('needempty'), 5000, 'error')
         end
     else
         if GlobalState.waterwagons[networkId] and GlobalState.waterwagons[networkId] > 0 then
             local updatedWaterwagons = GlobalState.waterwagons
             updatedWaterwagons[networkId] = updatedWaterwagons[networkId] - 1
             GlobalState.waterwagons = updatedWaterwagons
-            TriggerClientEvent("vorp:TipRight", source, locale('waterbucketfilled'), 5000)
+            Functions.Notify(source, locale('waterbucketfilled'), 5000, 'success')
         else
-            TriggerClientEvent("vorp:TipRight", source, locale('wagonempty'), 5000)
+            Functions.Notify(source, locale('wagonempty'), 5000, 'error')
         end
     end
 end)
