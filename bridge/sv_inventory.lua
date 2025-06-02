@@ -1,13 +1,12 @@
-local Inventory = {}
-
-local Config = require 'shared.config' 
+Inventory = {}
+VorpInv = exports.vorp_inventory
 
 function Inventory.hasItem(source, itemName, metadata)
 
     if Config.standalone then return true end -- If standalone mode is enabled, skip inventory check
 
     if GetResourceState("vorp_inventory") == "started" then
-        local item = exports.vorp_inventory:getItem(source, itemName, metadata)
+        local item = VorpInv.getItem(source, itemName)
         return item and item.count > 0
     else
         -- Add compatibility for other inventory systems here if needed
@@ -38,4 +37,3 @@ function Inventory.removeItem(source, itemName, amount, metadata)
     end
 end
 
-return Inventory

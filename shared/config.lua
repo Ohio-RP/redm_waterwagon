@@ -1,20 +1,21 @@
-return {
-    debug = true, -- Enable or Disable debug mode
-    standalone = false,  -- Set to true for standalone mode without inventory checks
-    oxTarget = false, -- Set true to use ox_target. Set false to use prompts
+Config = {
+    debug = true, -- Habilita ou desabilita o modo debug
+    standalone = false,  -- Define como true para modo standalone sem verificações de inventário
+    oxTarget = false, -- Define como true para usar ox_target. False para usar prompts
     
-    interactionDistance = 2, -- Distance to see drawtext and prompt for wagon
+    interactionDistance = 2, -- Distância para ver drawtext e prompt para wagon
 
-    notify = 'ox', -- Notification system | 'ox' , 'vorp' or custom.
+    notify = 'vorp', -- Sistema de notificação | 'ox' , 'vorp' ou personalizado
 
-    filledCan = 'wateringcan', -- Filled watercan item.
-    emptyCan = 'wateringcan_empty', -- Empty watercan item.
+    filledCan = 'wateringcan', -- Item de regador cheio
+    emptyCan = 'wateringcan_empty', -- Item de regador vazio
 
-    waterWagons = { -- Water wagon models and their maximum water levels.
+    waterWagons = { -- Modelos de wagon de água e seus níveis máximos de água
         ["cart05"] = 3,
+        ["oilWagon01x"] = 20,
     },
 
-    keys = {  -- Prompt keys. Didn't have a time to test prompts.  But eh...
+    keys = {  -- Teclas de prompt
         ["G"] = 0x760A9C6F,
         ["ENTER"] = 0xC7B5340A,
     }

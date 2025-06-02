@@ -1,5 +1,5 @@
-local Functions = {}
-local Config = require 'shared.config'
+Functions = {}
+
 
 -----------------------------------
 ------ Debug Print Function -------
@@ -9,7 +9,8 @@ function Functions.DebugPrint(level, text, ...)
     local args = {...}
     local formattedText = string.format(text, table.unpack(args))
     local levelPrefix = '^3[INFO]^7 |'
-    if level == 'error' then levelPrefix = '^1[ERROR]^7 |' end
+    if level == 'error' then levelPrefix = '^1[ERROR]^7 |'
+    elseif level == 'warning' then levelPrefix = '^3[WARN]^7 |' end
     print('^3[TB WATERWAGON]^7 | ^3[DEBUG]^7 | ' .. levelPrefix .. ' ' .. formattedText)
 end
 
@@ -32,7 +33,7 @@ local isPlayingDefinedScenario = false
 function Functions.playAnimation(animationType)
     local playerPed = cache.ped
     if isPlayingDefinedScenario then 
-        Functions.DebugPrint('info', 'Player is already on a scenario. Returning ...') 
+        Functions.DebugPrint('info', 'Player já está em um cenário. Retornando...') 
         return 
     end
     isPlayingDefinedScenario = true
@@ -55,7 +56,7 @@ function Functions.playAnimation(animationType)
         isPlayingDefinedScenario = false
         return true
     end
-    Functions.DebugPrint('error', 'Passed an invalid / non-listed scenario.')
+    Functions.DebugPrint('error', 'Cenário inválido ou não listado.')
     isPlayingDefinedScenario = false
     return false
 end
@@ -70,7 +71,7 @@ function Functions.Notify(source, message, duration, msgType)
         elseif Config.notify == 'vorp' then
             TriggerEvent("vorp:TipRight", message, duration)
         else
-            Functions.DebugPrint('error', 'You have to set this up yourself for your notification system.')
+            Functions.DebugPrint('error', 'Você precisa configurar isso para seu sistema de notificação.')
         end
     else
         if Config.notify == 'ox' then
@@ -78,9 +79,7 @@ function Functions.Notify(source, message, duration, msgType)
         elseif Config.notify == 'vorp' then
             TriggerClientEvent("vorp:TipRight", source, message, duration)
         else
-            Functions.DebugPrint('error', 'You have to set this up yourself for your notification system.')
+            Functions.DebugPrint('error', 'Você precisa configurar isso para seu sistema de notificação.')
         end
     end
 end
-
-return Functions

@@ -1,6 +1,3 @@
-local Config = require 'shared.config' 
-local Functions = require 'shared.functions'
-local Inventory = require 'bridge.cl_inventory'
 
 local closewagon = nil
 

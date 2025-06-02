@@ -1,4 +1,4 @@
-local Inventory = {}
+Inventory = {}
 
 function Inventory.hasItem(itemName)
     if GetResourceState("vorp_inventory") == "started" then
@@ -9,5 +9,3 @@ function Inventory.hasItem(itemName)
     end
     return false
 end
-
-return Inventory
