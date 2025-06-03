@@ -1,4 +1,3 @@
-
 local closewagon = nil
 
 lib.locale()
@@ -22,7 +21,7 @@ if Config.oxTarget then
                 onSelect = function(data)
                     local networkId = NetworkGetNetworkIdFromEntity(data.entity)
                     local waterLevel = getWagonWaterLevel(networkId)
-                    Functions.Notify(nil, locale('waterLevel', waterLevel), 5000, 'inform')
+                    Functions.Notify(nil, locale('waterLevel', waterLevel, maxCapacity), 5000, 'inform')
                 end
             },
             {
@@ -131,14 +130,15 @@ else
                             local waterLevel = getWagonWaterLevel(networkId)
 
                             if waterLevel == 0 then
-                                Functions.DrawText3D(wagonCoords.x, wagonCoords.y, wagonCoords.z + 1.0, locale('wagonempty'))
+                                Functions.DrawText3D(wagonCoords.x, wagonCoords.y, wagonCoords.z + 1.0, "Carroça Vazia", waterLevel, maxCapacity)
                             elseif waterLevel == maxCapacity then
-                                Functions.DrawText3D(wagonCoords.x, wagonCoords.y, wagonCoords.z + 1.0, locale('wagonfull'))
+                                Functions.DrawText3D(wagonCoords.x, wagonCoords.y, wagonCoords.z + 1.0, "Carroça Cheia", waterLevel, maxCapacity)
                             else
-                                Functions.DrawText3D(wagonCoords.x, wagonCoords.y, wagonCoords.z + 1.0, locale('waterLevel', waterLevel))
+                                Functions.DrawText3D(wagonCoords.x, wagonCoords.y, wagonCoords.z + 1.0, "Carroça de Água", waterLevel, maxCapacity)
                             end
                             PromptSetActiveGroupThisFrame(prompts3, CreateVarString(10, 'LITERAL_STRING', locale('waterwagon')))
 
+                            -- LÓGICA CORRIGIDA: Prompt de ENCHER aparece quando carroça NÃO está cheia E jogador está na água
                             if waterLevel < maxCapacity and isInWater(ped) then
                                 PromptSetVisible(fillwagon, true)
                                 if UiPromptHasStandardModeCompleted(fillwagon) then
@@ -158,6 +158,7 @@ else
                                 PromptSetVisible(fillwagon, false)
                             end
 
+                            -- LÓGICA CORRIGIDA: Prompt de RETIRAR ÁGUA aparece quando carroça TEM água
                             if waterLevel > 0 then
                                 PromptSetVisible(wagonwater, true)
                                 if UiPromptHasStandardModeCompleted(wagonwater) then
@@ -197,5 +198,65 @@ AddEventHandler('onResourceStop', function(resourceName)
     ClearPedTasksImmediately(cache.ped)
     for modelHash, _ in pairs(Config.waterWagons) do
         exports.ox_target:removeModel(modelHash)
+    end
+end)
+
+-- Função para verificar wagon mais próxima
+local function getNearestWaterWagon(maxDistance)
+    maxDistance = maxDistance or Config.interactionDistance
+    local ped = cache.ped
+    local playerCoords = GetEntityCoords(ped)
+    local nearestWagon = nil
+    local minDistance = maxDistance
+    local wagonInfo = nil
+
+    -- Procurar por todas as wagons próximas
+    local wagon = GetClosestVehicle(playerCoords, maxDistance, 0, 70)
+    if wagon and DoesEntityExist(wagon) then
+        local wagonCoords = GetEntityCoords(wagon)
+        local distance = #(playerCoords - wagonCoords)
+        
+        if distance <= minDistance then
+            local model = GetEntityModel(wagon)
+            local networkId = NetworkGetNetworkIdFromEntity(wagon)
+            
+            -- Verificar se é uma wagon de água
+            for wagonType, maxCapacity in pairs(Config.waterWagons) do
+                if GetHashKey(wagonType) == model then
+                    local waterLevel = getWagonWaterLevel(networkId)
+                    wagonInfo = {
+                        entity = wagon,
+                        networkId = networkId,
+                        model = wagonType,
+                        maxCapacity = maxCapacity,
+                        waterLevel = waterLevel,
+                        distance = distance,
+                        coords = wagonCoords
+                    }
+                    break
+                end
+            end
+        end
+    end
+
+    return wagonInfo
+end
+
+-- Export: Verificar wagon de água mais próxima
+exports('getNearestWaterWagon', function(maxDistance)
+    return getNearestWaterWagon(maxDistance)
+end)
+
+-- Export: Verificar se está perto de uma wagon de água
+exports('isNearWaterWagon', function(maxDistance)
+    local wagonInfo = getNearestWaterWagon(maxDistance)
+    return wagonInfo ~= nil, wagonInfo
+end)
+
+-- Evento para verificar wagon mais próxima quando solicitado pelo servidor
+RegisterNetEvent('tb_waterwagon:checkNearestWagon', function()
+    local wagonInfo = getNearestWaterWagon()
+    if wagonInfo then
+        TriggerServerEvent('tb_waterwagon:setNearestWagon', wagonInfo)
     end
 end)

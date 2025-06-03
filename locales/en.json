@@ -1,12 +1,12 @@
 {
-    "needempty": "You need an empty bucket", 
-    "fillwagon": "Fill Water Wagon", 
-    "wagonwater": "Pour Water into Bucket", 
-    "wagonfull": "Wagon is Full", 
-    "wagonempty": "Wagon is Empty",
-    "waterbucketfilled": "Water bucket filled", 
-    "waterLevel": "Water Level: %s", 
-    "waterwagon": "Water Wagon",
-    "checkLevel": "Check Water Level",
-    "noBucket": "You dont have empty bucket in your hand."
+    "needempty": "Você precisa de um balde vazio", 
+    "fillwagon": "Encher Carroça", 
+    "wagonwater": "Pegar Água da Carroça", 
+    "wagonfull": "Carroça Cheia", 
+    "wagonempty": "Carroça Vazia",
+    "waterbucketfilled": "Balde enchido com água", 
+    "waterLevel": "Nível de Água: %s/%s", 
+    "waterwagon": "Carroça de Água",
+    "checkLevel": "Verificar Nível de Água",
+    "noBucket": "Você não tem um balde vazio nas mãos."
 }

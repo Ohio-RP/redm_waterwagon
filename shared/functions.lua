@@ -17,11 +17,18 @@ end
 -----------------------------------
 ------ Draw Text 3D Function ------
 -----------------------------------
-function Functions.DrawText3D(x, y, z, text)
+function Functions.DrawText3D(x, y, z, text, waterLevel, maxCapacity)
     local onScreen, _x, _y = GetScreenCoordFromWorldCoord(x, y, z)
     if onScreen then
         SetTextScale(0.35, 0.35)
         SetTextFontForCurrentCommand(1)
+        SetTextColor(255, 255, 0, 215) -- Cor amarela (RGB: 255, 255, 0)
+        
+        -- Se temos informação de nível de água, adicionar ao texto
+        if waterLevel and maxCapacity then
+            text = text .. string.format(" | Água: %d/%d", waterLevel, maxCapacity)
+        end
+        
         DisplayText(CreateVarString(10, "LITERAL_STRING", text), _x, _y)
     end
 end

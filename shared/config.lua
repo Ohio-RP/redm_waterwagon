@@ -1,6 +1,6 @@
 Config = {
     debug = true, -- Habilita ou desabilita o modo debug
-    standalone = false,  -- Define como true para modo standalone sem verificações de inventário
+    standalone = true,  -- Define como true para modo standalone sem verificações de inventário
     oxTarget = false, -- Define como true para usar ox_target. False para usar prompts
     
     interactionDistance = 2, -- Distância para ver drawtext e prompt para wagon
